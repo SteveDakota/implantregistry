@@ -1,15 +1,8 @@
-import nodemailer from 'nodemailer'
-import { generatePatientId } from './crypto'
+import { Resend } from 'resend'
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_SERVER_HOST,
-  port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_SERVER_USER,
-    pass: process.env.EMAIL_SERVER_PASSWORD,
-  },
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
+const APP_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+const FROM_EMAIL = process.env.EMAIL_FROM || 'Implant Registry <onboarding@resend.dev>'
 
 export async function sendMagicLink(
   email: string, 
@@ -17,8 +10,7 @@ export async function sendMagicLink(
   userType: 'dentist' | 'patient',
   patientId?: string
 ): Promise<void> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const magicLinkUrl = `${baseUrl}/api/auth/verify?token=${token}&type=${userType}`
+  const magicLinkUrl = `${APP_URL}/api/auth/verify?token=${token}&type=${userType}`
   
   let subject: string
   let html: string
@@ -68,14 +60,17 @@ export async function sendMagicLink(
     `
   }
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
     to: email,
     subject,
     html
-  }
+  })
 
-  await transporter.sendMail(mailOptions)
+  if (error) {
+    console.error('Resend error:', error)
+    throw new Error(`Failed to send email: ${error.message}`)
+  }
 }
 
 export async function sendEmailVerification(
@@ -83,8 +78,7 @@ export async function sendEmailVerification(
   dentistId: string,
   dentistName: string
 ): Promise<void> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const verificationUrl = `${baseUrl}/api/auth/verify-email?token=${dentistId}&type=dentist`
+  const verificationUrl = `${APP_URL}/api/auth/verify-email?token=${dentistId}&type=dentist`
   
   const html = `
     <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -106,14 +100,17 @@ export async function sendEmailVerification(
     </div>
   `
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
     to: email,
     subject: 'Verify your Implant Registry account',
     html
-  }
+  })
 
-  await transporter.sendMail(mailOptions)
+  if (error) {
+    console.error('Resend error:', error)
+    throw new Error(`Failed to send verification email: ${error.message}`)
+  }
 }
 
 export async function sendPatientSetupEmail(
@@ -123,8 +120,7 @@ export async function sendPatientSetupEmail(
   dentistName: string,
   officeAddress: string
 ): Promise<void> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const setupUrl = `${baseUrl}/patient/setup?token=${setupToken}`
+  const setupUrl = `${APP_URL}/patient/setup?token=${setupToken}`
   
   const html = `
     <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -156,14 +152,17 @@ export async function sendPatientSetupEmail(
     </div>
   `
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
     to: email,
     subject: 'Your Implant Registry Account - Action Required',
     html
-  }
+  })
 
-  await transporter.sendMail(mailOptions)
+  if (error) {
+    console.error('Resend error:', error)
+    throw new Error(`Failed to send setup email: ${error.message}`)
+  }
 }
 
 export async function sendImplantNotification(
@@ -172,8 +171,7 @@ export async function sendImplantNotification(
   dentistName: string,
   implantDetails: any
 ): Promise<void> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const patientPortalUrl = `${baseUrl}/patient`
+  const patientPortalUrl = `${APP_URL}/patient`
   
   const html = `
     <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -204,14 +202,17 @@ export async function sendImplantNotification(
     </div>
   `
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
     to: patientEmail,
     subject: 'New Implant Record Added to Your File',
     html
-  }
+  })
 
-  await transporter.sendMail(mailOptions)
+  if (error) {
+    console.error('Resend error:', error)
+    // Don't throw for notifications - they're not critical
+  }
 }
 
 export async function sendRecordAccessNotification(
@@ -220,8 +221,7 @@ export async function sendRecordAccessNotification(
   dentistName: string,
   accessType: string
 ): Promise<void> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const patientPortalUrl = `${baseUrl}/patient`
+  const patientPortalUrl = `${APP_URL}/patient`
   
   const accessTypeDescription = accessType === 'PATIENT_RECORDS_VIEW' 
     ? 'viewed your complete implant history'
@@ -262,12 +262,15 @@ export async function sendRecordAccessNotification(
     </div>
   `
 
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
     to: patientEmail,
     subject: `Your Records Were Accessed by Dr. ${dentistName}`,
     html
-  }
+  })
 
-  await transporter.sendMail(mailOptions)
+  if (error) {
+    console.error('Resend error:', error)
+    // Don't throw for notifications - they're not critical
+  }
 }

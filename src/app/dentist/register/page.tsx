@@ -27,12 +27,14 @@ export default function DentistRegister() {
       })
 
       const data = await response.json()
+      console.log('Response status:', response.status, 'OK:', response.ok)
+      console.log('Response data:', data)
 
-      if (response.ok) {
+      if (response.ok && data.success) {
         setMessage(data.message || 'Registration successful! Please check your email and click the verification link to activate your account.')
         setFormData({ name: '', email: '', licenseId: '', officeAddress: '', password: '', toothNotationPreference: 'universal' })
       } else {
-        setMessage(data.error || 'Registration failed')
+        setMessage(data.error || data.message || 'Registration failed')
       }
     } catch (error) {
       setMessage('Network error. Please try again.')

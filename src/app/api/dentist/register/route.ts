@@ -44,9 +44,14 @@ export async function POST(request: NextRequest) {
 
     const dentistId = result.rows[0].id
 
-    // Send verification email
-    const { sendEmailVerification } = await import('@/lib/email')
-    await sendEmailVerification(email, dentistId.toString(), name)
+    // Send verification email (skip in production for now - Ethereal doesn't work in prod)
+    try {
+      const { sendEmailVerification } = await import('@/lib/email')
+      await sendEmailVerification(email, dentistId.toString(), name)
+    } catch (emailError) {
+      console.error('Email sending failed (expected in production with Ethereal):', emailError)
+      // Continue anyway - account is created
+    }
 
     // Log audit entry
     await query(
