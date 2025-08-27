@@ -1,0 +1,47 @@
+{
+  "name": "implant-registry",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:setup": "psql $DATABASE_URL -f database/schema.sql",
+    "db:reset": "node scripts/reset-database.js",
+    "deploy-contract": "node scripts/deploy-contract.js",
+    "test-contract": "node scripts/test-contract.js"
+  },
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20",
+    "@types/nodemailer": "^6.4.14",
+    "@types/pg": "^8.10.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "eslint": "^8",
+    "eslint-config-next": "15.1.6",
+    "jose": "^6.0.13",
+    "jsonwebtoken": "^9.0.2",
+    "next": "15.1.6",
+    "nodemailer": "^6.9.8",
+    "pg": "^8.11.0",
+    "postcss": "^8",
+    "qrcode": "^1.5.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  }
+}
