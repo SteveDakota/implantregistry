@@ -82,7 +82,7 @@ export default function PatientPortal() {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="text-center mb-4">
               <p className="text-sm text-gray-600 mb-2">
-                Don't have a Patient ID yet?
+                Don&apos;t have a Patient ID yet?
               </p>
               <Link
                 href="/patient/register"

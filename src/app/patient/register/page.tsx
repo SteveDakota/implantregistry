@@ -147,7 +147,7 @@ export default function PatientRegister() {
                       {result.patientId}
                     </p>
                     <p className="text-xs text-green-600 mt-2">
-                      💾 Save this ID safely - you'll need it to access your records
+                      💾 Save this ID safely - you&apos;ll need it to access your records
                     </p>
                   </div>
 

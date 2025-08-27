@@ -107,7 +107,7 @@ export default function DentistPortal() {
 
           <div className="mt-8 pt-6 border-t border-gray-200 text-center">
             <p className="text-sm text-gray-600 mb-4">
-              Don't have an account?
+              Don&apos;t have an account?
             </p>
             <Link
               href="/dentist/register"
