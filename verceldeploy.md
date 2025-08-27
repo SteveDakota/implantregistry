@@ -31,3 +31,7 @@ Replace any `'` in JSX text content with `&apos;`
 4. Only commit if build succeeds
 
 **Remember: This error ALWAYS causes Vercel deployment failures!**
+
+## Smart Contract Status
+- **Production Contract**: `0xa9C5551E057631c94AE6c46368843acA8f95a1ba` (Clean, no old data)
+- **Deployed**: August 27, 2025
