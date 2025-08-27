@@ -1,9 +1,9 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-export default function PatientSetup() {
+function PatientSetupContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [token, setToken] = useState('')
@@ -179,5 +179,13 @@ export default function PatientSetup() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function PatientSetup() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center">Loading...</div>}>
+      <PatientSetupContent />
+    </Suspense>
   )
 }

@@ -30,7 +30,7 @@ export default function DentistRegister() {
 
       if (response.ok) {
         setMessage(data.message || 'Registration successful! Please check your email and click the verification link to activate your account.')
-        setFormData({ name: '', email: '', licenseId: '', officeAddress: '', password: '' })
+        setFormData({ name: '', email: '', licenseId: '', officeAddress: '', password: '', toothNotationPreference: 'universal' })
       } else {
         setMessage(data.error || 'Registration failed')
       }
@@ -41,7 +41,7 @@ export default function DentistRegister() {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { query } from '@/lib/db'
 import { hashEmail } from '@/lib/crypto'
-import { writeImplantRecord, writeAuditLog } from '@/lib/blockchain'
+import { writeImplantRecord, writeAuditLog, readImplantRecords } from '@/lib/blockchain'
 import { sendImplantNotification } from '@/lib/email'
 import { jwtVerify } from 'jose'
 

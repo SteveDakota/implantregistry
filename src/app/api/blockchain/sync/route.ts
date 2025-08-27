@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
         
       } catch (patientError) {
         console.error(`Error syncing patient ${patientId}:`, patientError)
-        errors.push(`Patient ${patientId}: ${patientError.message}`)
+        errors.push(`Patient ${patientId}: ${patientError instanceof Error ? patientError.message : String(patientError)}`)
       }
     }
 

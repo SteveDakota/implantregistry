@@ -51,6 +51,9 @@ export async function middleware(request: NextRequest) {
 
   try {
     // Verify JWT token
+    if (!authToken) {
+      throw new Error('No auth token')
+    }
     const { payload } = await jwtVerify(authToken, secret)
     const userData = payload as any
     

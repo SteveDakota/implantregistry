@@ -1,9 +1,9 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-export default function DentistPortal() {
+function DentistPortalContent() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -128,5 +128,13 @@ export default function DentistPortal() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function DentistPortal() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center">Loading...</div>}>
+      <DentistPortalContent />
+    </Suspense>
   )
 }
