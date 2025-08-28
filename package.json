@@ -13,6 +13,7 @@
     "test-contract": "node scripts/test-contract.js"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
